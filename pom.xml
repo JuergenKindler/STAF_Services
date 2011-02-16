@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.jki.staf.service</groupId>
+    <artifactId>root</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>irc</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <easyb.test.sources>${project.basedir}/src/test/easyb</easyb.test.sources>
+        <easyb.test.file.types>**/*.story,**/*.specification</easyb.test.file.types>
+    </properties>
+
+    <modules>
+        <module>irc</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.easyb</groupId>
+                <artifactId>easyb</artifactId>
+                <version>0.9.8</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.staf</groupId>
+                <artifactId>jstaf</artifactId>
+                <version>3.4.4</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.schwering</groupId>
+                <artifactId>irclib</artifactId>
+                <version>1.10</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <testSourceDirectory>${easyb.test.sources}</testSourceDirectory>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.easyb</groupId>
+                    <artifactId>maven-easyb-plugin</artifactId>
+                    <version>0.9.7-1</version>
+                    <configuration>
+                        <easybTestDirectory>${easyb.test.sources}</easybTestDirectory>
+                        <includes>
+                            <code>${easyb.test.file.types}</code>
+                        </includes>
+                        <storyReport>${project.build.directory}/easyb/report.txt</storyReport>
+                        <storyType>txtstory</storyType>
+                        <xmlReport>${project.build.directory}/easyb/report.xml</xmlReport>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>test</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
