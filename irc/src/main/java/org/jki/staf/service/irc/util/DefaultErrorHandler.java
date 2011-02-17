@@ -1,4 +1,4 @@
-package org.jki.staf.service.irc;
+package org.jki.staf.service.irc.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -15,17 +15,17 @@ public class DefaultErrorHandler {
 	private DateFormat df;
 	private String service;
 
-	DefaultErrorHandler(String serviceName) {
+	public DefaultErrorHandler(String serviceName) {
 		super();
 		df = SimpleDateFormat.getDateTimeInstance();
 	}
 	
 	/**
-	 * Handle an exception during initialization
+	 * Handle an exception with initialization info
 	 * @param exception - the exception
 	 * @return A staf result.
 	 */
-	STAFResult handleException(InitInfo initInfo, Exception exception) {
+	public STAFResult handleException(InitInfo initInfo, Exception exception) {
 		log(createErrorMessage(exception.getClass(), initInfo.name + " " + initInfo.parms), exception);
 		return createResultFromThrowable(exception);
 	}
@@ -36,7 +36,7 @@ public class DefaultErrorHandler {
 	 * @param exception - the exception
 	 * @return A staf result.
 	 */
-	STAFResult handleException(RequestInfo reqInfo, Exception exception) {
+	public STAFResult handleException(RequestInfo reqInfo, Exception exception) {
 		log(createErrorMessage(exception.getClass(), reqInfo.request), exception);
 		return createResultFromThrowable(exception);
 	}
@@ -47,7 +47,7 @@ public class DefaultErrorHandler {
 	 * @param exception - the exception
 	 * @return A staf result.
 	 */
-	STAFResult handleError(RequestInfo reqInfo, Error error) {
+	public STAFResult handleError(RequestInfo reqInfo, Error error) {
 		log(createErrorMessage(error.getClass(), reqInfo.request), error);
 		return createResultFromThrowable(error);
 	}

@@ -10,7 +10,13 @@ public interface ServiceCommand {
 	/**
 	 * Execute a request and return a STAF result
 	 * @param reqInfo
-	 * @return
+	 * @return a STAF Result instance
 	 */
 	STAFResult execute(RequestInfo reqInfo);
+
+	/**
+	 * Return the name of the command
+	 * @return the command name
+	 */
+	String getCommandName();
 }
