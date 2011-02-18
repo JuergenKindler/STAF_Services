@@ -6,10 +6,11 @@ package org.jki.staf.service.irc;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jki.staf.service.commands.ServiceCommand;
 import org.jki.staf.service.irc.commands.HelpCommand;
 import org.jki.staf.service.irc.commands.VersionCommand;
-import org.jki.staf.service.irc.util.ActionExtractor;
-import org.jki.staf.service.irc.util.DefaultErrorHandler;
+import org.jki.staf.service.util.ActionExtractor;
+import org.jki.staf.service.util.DefaultErrorHandler;
 
 import com.ibm.staf.STAFException;
 import com.ibm.staf.STAFHandle;

@@ -1,11 +1,12 @@
 package org.jki.staf.service.irc.commands;
 
-import org.jki.staf.service.irc.ServiceCommand;
+import org.jki.staf.service.commands.ServiceCommand;
+import org.jki.staf.service.commands.AbstractServiceCommand;
 
 import com.ibm.staf.STAFResult;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.InitInfo;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;
-import org.jki.staf.service.irc.util.VersionReader;
+import org.jki.staf.service.util.VersionReader;
 
 /**
  * A command to return the version of the service.

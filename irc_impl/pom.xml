@@ -9,10 +9,10 @@
 	</parent>
 
 	<groupId>org.jki.staf.service</groupId>
-	<artifactId>irc</artifactId>
+	<artifactId>irc_impl</artifactId>
 	<packaging>jar</packaging>
 
-	<name>irc</name>
+	<name>irc service implementation</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -34,6 +34,12 @@
 			<groupId>net.sf.staf</groupId>
 			<artifactId>jstaf</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.jki.staf.service</groupId>
+			<artifactId>common</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -43,32 +49,10 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		
-		<!-- STAF service jars look a bit different from "normal" jars ... -->
-		<outputDirectory>
-			${project.build.directory}/STAF-INF/classes
-		</outputDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.easyb</groupId>
 				<artifactId>maven-easyb-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<classesDirectory>${project.build.directory}</classesDirectory>
-					<archive>
-						<manifestSections>
-							<manifestSection>
-								<name>staf/service/info</name>
-								<manifestEntries>
-									<Service-Class>org.jki.staf.service.irc.IrcService</Service-Class>
-								</manifestEntries>
-							</manifestSection>
-						</manifestSections>
-					</archive>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

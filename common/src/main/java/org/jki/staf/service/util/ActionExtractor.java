@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.jki.staf.service.irc.util;
+package org.jki.staf.service.util;
 
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;
 

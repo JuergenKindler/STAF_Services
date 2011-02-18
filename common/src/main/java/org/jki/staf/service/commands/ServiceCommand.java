@@ -1,4 +1,4 @@
-package org.jki.staf.service.irc;
+package org.jki.staf.service.commands;
 
 import com.ibm.staf.STAFResult;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;

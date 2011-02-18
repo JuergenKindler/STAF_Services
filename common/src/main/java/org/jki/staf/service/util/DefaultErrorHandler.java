@@ -1,4 +1,4 @@
-package org.jki.staf.service.irc.util;
+package org.jki.staf.service.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
