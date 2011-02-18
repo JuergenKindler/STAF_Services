@@ -5,16 +5,17 @@ import org.jki.staf.service.irc.ServiceCommand;
 import com.ibm.staf.STAFResult;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.InitInfo;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;
+import org.jki.staf.service.irc.util.VersionReader;
 
 /**
  * A command to return the version of the service.
  */
 public class VersionCommand extends AbstractServiceCommand implements ServiceCommand {
-	private String serviceVersion;
+	private VersionReader reader;
 	
-	public VersionCommand(String commandName, String machineName, InitInfo initInfo,String version) {
+	public VersionCommand(String commandName, String machineName, InitInfo initInfo) {
 		super(commandName, machineName, initInfo);
-		serviceVersion = version;
+		reader = new VersionReader();
 	}
 	
 	@Override
@@ -22,7 +23,7 @@ public class VersionCommand extends AbstractServiceCommand implements ServiceCom
 		STAFResult result = super.execute(reqInfo);
 		
 		if (result.rc == STAFResult.Ok) {
-			result = new STAFResult(STAFResult.Ok, serviceVersion);
+			result = new STAFResult(STAFResult.Ok, reader.getVersion());
 		}
 		
 		return result;

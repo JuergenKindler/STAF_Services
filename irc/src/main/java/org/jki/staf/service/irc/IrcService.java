@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jki.staf.service.irc.commands.HelpCommand;
+import org.jki.staf.service.irc.commands.VersionCommand;
 import org.jki.staf.service.irc.util.ActionExtractor;
 import org.jki.staf.service.irc.util.DefaultErrorHandler;
 
@@ -21,7 +22,6 @@ import com.ibm.staf.service.STAFServiceInterfaceLevel30;
  */
 public class IrcService implements STAFServiceInterfaceLevel30 {
 	private static String CR = System.getProperty("line.separator");
-	private static String VERSION = "${project.version}";
 	private static String CMD_VERSION = "VERSION";
 	private static String CMD_HELP = "HELP";
 	private static String SERVICE_NAME = IrcService.class.getSimpleName();
@@ -60,6 +60,7 @@ public class IrcService implements STAFServiceInterfaceLevel30 {
 		try {
 			// Determine the command request (the first word in the request)
 			String action = extractor.getAction(reqInfo);
+			System.out.println(); // 
 
 			// Call the appropriate command to handle the command request
 			if (commands.containsKey(action.toUpperCase())) {
@@ -119,8 +120,8 @@ public class IrcService implements STAFServiceInterfaceLevel30 {
 	private void setupCommands() {
 		commands.put(CMD_HELP, new HelpCommand(CMD_HELP, localMachineName,
 				initInfo, HELP_MSG));
-		commands.put(CMD_VERSION, new HelpCommand(CMD_VERSION, localMachineName,
-				initInfo, VERSION));
+		commands.put(CMD_VERSION, new VersionCommand(CMD_VERSION, localMachineName,
+				initInfo));
 	}
 
 	

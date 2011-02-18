@@ -8,10 +8,29 @@ import com.ibm.staf.service.STAFCommandParser;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.InitInfo;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;
 
+/**
+ * An abstract service command that provides a basic implementation of a service command.
+ */
 public abstract class AbstractServiceCommand implements ServiceCommand {
+	/**
+	 * The name of the command
+	 */
 	protected String name;
+
+	/**
+	 * The name of the local machine (where the service is installed)
+	 */
 	protected String localMachineName;
+
+	/**
+	 * Information from the initialization of the service
+	 */
 	protected InitInfo info;
+
+	/**
+	 * The command parser for this command. 
+	 * Necessary to parse all options from command line.
+	 */
 	protected STAFCommandParser parser;
 	
 	private AbstractServiceCommand() {
@@ -34,7 +53,7 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 	}
 
 
-	/* (non-Javadoc)
+	/** (non-Javadoc)
 	 * @see org.jki.staf.service.irc.ServiceCommand#execute(com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo)
 	 */
 	@Override
@@ -51,10 +70,7 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 		return result;
 	}
 
-	
-	/* (non-Javadoc)
-	 * @see org.jki.staf.service.irc.ServiceCommand#getCommandName()
-	 */
+
 	@Override
 	public final String getCommandName() {
 		return name;

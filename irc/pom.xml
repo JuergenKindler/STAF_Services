@@ -1,47 +1,75 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <artifactId>root</artifactId>
-        <groupId>org.jki.staf.service</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-    
-    <groupId>org.jki.staf.service</groupId>
-    <artifactId>irc</artifactId>
-    <packaging>jar</packaging>
+	<parent>
+		<artifactId>root</artifactId>
+		<groupId>org.jki.staf.service</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
 
-    <name>irc</name>
-    <url>http://maven.apache.org</url>
+	<groupId>org.jki.staf.service</groupId>
+	<artifactId>irc</artifactId>
+	<packaging>jar</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+	<name>irc</name>
+	<url>http://maven.apache.org</url>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.schwering</groupId>
-            <artifactId>irclib</artifactId>
-        </dependency>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-        <dependency>
-            <groupId>org.easyb</groupId>
-            <artifactId>easyb</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>net.sf.staf</groupId>
-            <artifactId>jstaf</artifactId>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.schwering</groupId>
+			<artifactId>irclib</artifactId>
+		</dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.easyb</groupId>
-                <artifactId>maven-easyb-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+		<dependency>
+			<groupId>org.easyb</groupId>
+			<artifactId>easyb</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.staf</groupId>
+			<artifactId>jstaf</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		
+		<!-- STAF service jars look a bit different from "normal" jars ... -->
+		<outputDirectory>
+			${project.build.directory}/STAF-INF/classes
+		</outputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.easyb</groupId>
+				<artifactId>maven-easyb-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<classesDirectory>${project.build.directory}</classesDirectory>
+					<archive>
+						<manifestSections>
+							<manifestSection>
+								<name>staf/service/info</name>
+								<manifestEntries>
+									<Service-Class>org.jki.staf.service.irc.IrcService</Service-Class>
+								</manifestEntries>
+							</manifestSection>
+						</manifestSections>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
