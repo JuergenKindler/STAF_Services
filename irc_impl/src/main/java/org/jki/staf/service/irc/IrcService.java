@@ -47,13 +47,7 @@ public class IrcService implements STAFServiceInterfaceLevel30 {
 		commands = new HashMap<String, ServiceCommand>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.ibm.staf.service.STAFServiceInterfaceLevel30#acceptRequest(com.ibm
-	 * .staf.service.STAFServiceInterfaceLevel30.RequestInfo)
-	 */
+    /** {@inheritDoc}*/
 	@Override
 	public STAFResult acceptRequest(RequestInfo reqInfo) {
 		STAFResult result = null;
@@ -81,13 +75,7 @@ public class IrcService implements STAFServiceInterfaceLevel30 {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.ibm.staf.service.STAFServiceInterfaceLevel30#init(com.ibm.staf.service
-	 * .STAFServiceInterfaceLevel30.InitInfo)
-	 */
+    /** {@inheritDoc}*/
 	@Override
 	public STAFResult init(InitInfo initInformation) {
 		STAFResult result = new STAFResult(STAFResult.Ok);
@@ -126,11 +114,7 @@ public class IrcService implements STAFServiceInterfaceLevel30 {
 	}
 
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.ibm.staf.service.STAFServiceInterfaceLevel30#term()
-	 */
+    /** {@inheritDoc}*/
 	@Override
 	public STAFResult term() {
 		try {

@@ -14,11 +14,18 @@ import org.jki.staf.service.util.VersionReader;
 public class VersionCommand extends AbstractServiceCommand implements ServiceCommand {
 	private VersionReader reader;
 	
+	/**
+	 * Create a version command instance.
+	 * @param commandName - the name of the command
+	 * @param machineName - the local machine name
+	 * @param initInfo - the initialization info of the service
+	 */
 	public VersionCommand(String commandName, String machineName, InitInfo initInfo) {
 		super(commandName, machineName, initInfo);
 		reader = new VersionReader();
 	}
 	
+    /** {@inheritDoc}*/
 	@Override
 	public STAFResult execute(final RequestInfo reqInfo) {
 		STAFResult result = super.execute(reqInfo);
@@ -29,10 +36,9 @@ public class VersionCommand extends AbstractServiceCommand implements ServiceCom
 		
 		return result;
 	}
+
 	
-	/* (non-Javadoc)
-	 * @see org.jki.staf.service.irc.commands.AbstractServiceCommand#getTrustLevel()
-	 */
+    /** {@inheritDoc}*/
 	@Override
 	protected int getTrustLevel() {
 		return 1;

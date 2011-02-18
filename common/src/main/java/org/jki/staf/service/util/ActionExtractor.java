@@ -9,6 +9,9 @@ import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;
  * A tiny class to extract the action from a request
  */
 public class ActionExtractor {
+	/**
+	 * Create a new extractor.
+	 */
 	public ActionExtractor() {
 		super();
 	}

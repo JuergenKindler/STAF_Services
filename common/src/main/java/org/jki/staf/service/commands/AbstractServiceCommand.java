@@ -53,9 +53,7 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 	}
 
 
-	/** (non-Javadoc)
-	 * @see org.jki.staf.service.irc.ServiceCommand#execute(com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo)
-	 */
+    /** {@inheritDoc}*/
 	@Override
 	public STAFResult execute(final RequestInfo reqInfo) {
 		STAFResult result = new STAFResult(STAFResult.Ok);
@@ -71,6 +69,7 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 	}
 
 
+    /** {@inheritDoc}*/
 	@Override
 	public final String getCommandName() {
 		return name;

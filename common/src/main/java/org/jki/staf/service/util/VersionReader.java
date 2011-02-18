@@ -21,6 +21,7 @@ public class VersionReader {
 		versionProperties = new Properties();
 		
 		try {
+			@SuppressWarnings("rawtypes")
 			Class clasz = this.getClass();
 			InputStream is = clasz.getResourceAsStream(FILE);
 			versionProperties.load(is);

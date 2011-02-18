@@ -10,11 +10,19 @@ import com.ibm.staf.STAFResult;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.InitInfo;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;
 
+/**
+ * A default error handler doing all the typical error handling.
+ * (TODO: Still have to see whether this needs improvement ...)
+ */
 public class DefaultErrorHandler {
 	private static String CR = System.getProperty("line.separator");
 	private DateFormat df;
 	private String service;
 
+	/**
+	 * Create an error handler for a service.
+	 * @param serviceName - the name of the service.
+	 */
 	public DefaultErrorHandler(String serviceName) {
 		super();
 		df = SimpleDateFormat.getDateTimeInstance();
@@ -22,6 +30,7 @@ public class DefaultErrorHandler {
 	
 	/**
 	 * Handle an exception with initialization info
+	 * @param initInfo - the service initialization info
 	 * @param exception - the exception
 	 * @return A staf result.
 	 */
@@ -44,7 +53,7 @@ public class DefaultErrorHandler {
 	/**
 	 * Handle an error that happened during request handling.
 	 * @param reqInfo - info about request
-	 * @param exception - the exception
+	 * @param error - the exception
 	 * @return A staf result.
 	 */
 	public STAFResult handleError(RequestInfo reqInfo, Error error) {
@@ -62,7 +71,7 @@ public class DefaultErrorHandler {
 		return sr.toString();
 	}
 
-	private String createErrorMessage(Class errorType, String request) {
+	private String createErrorMessage(@SuppressWarnings("rawtypes") Class errorType, String request) {
 		return errorType.getSimpleName() + " on " + service + " request: " + request + CR;
 	}
 	

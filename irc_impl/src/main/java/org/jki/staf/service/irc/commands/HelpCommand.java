@@ -13,14 +13,20 @@ import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;
 public class HelpCommand extends AbstractServiceCommand implements ServiceCommand {
 	private String helpString;
 
+	/**
+	 * Create a help command instance.
+	 * @param commandName - the name of this command
+	 * @param machineName - the name of the local machine
+	 * @param initInfo - initialization info of the service
+	 * @param help - the help string
+	 */
 	public HelpCommand(final String commandName, final String machineName, final InitInfo initInfo, final String help) {
 		super(commandName, machineName, initInfo);
 		helpString = help;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jki.staf.service.irc.commands.AbstractServiceCommand#execute(com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo)
-	 */
+    /** {@inheritDoc}*/
+	@Override
 	public STAFResult execute(RequestInfo reqInfo) {
 		STAFResult result = super.execute(reqInfo);
 		
@@ -31,10 +37,15 @@ public class HelpCommand extends AbstractServiceCommand implements ServiceComman
 		return result;
 	}
 
+	/**
+	 * Returns the help string.
+	 * @return the help
+	 */
 	public String getHelpString() {
 		return helpString;
 	}
-	
+
+    /** {@inheritDoc}*/
 	@Override
 	protected int getTrustLevel() {
 		return 1;
