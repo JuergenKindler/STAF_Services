@@ -4,6 +4,7 @@ import org.jki.staf.service.commands.ServiceCommand;
 
 import com.ibm.staf.STAFResult;
 import com.ibm.staf.STAFUtil;
+import com.ibm.staf.service.STAFCommandParseResult;
 import com.ibm.staf.service.STAFCommandParser;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.InitInfo;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;
@@ -32,6 +33,7 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 	 * Necessary to parse all options from command line.
 	 */
 	protected STAFCommandParser parser;
+	protected STAFCommandParseResult parseResult;
 	
 	private AbstractServiceCommand() {
 		super();
@@ -53,7 +55,13 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 	}
 
 
-    /** {@inheritDoc}*/
+	/**
+	 * Execute a request and return a STAF result.
+	 * This implementation already parses the request and returns an error
+	 * if the parse failed. 
+	 * @param reqInfo - the request
+	 * @return a STAF Result instance
+	 */
 	@Override
 	public STAFResult execute(final RequestInfo reqInfo) {
 		STAFResult result = new STAFResult(STAFResult.Ok);
@@ -63,6 +71,13 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 
 		if (trustResult.rc != STAFResult.Ok) {
 			result = trustResult;
+			
+		} else {
+			parseResult = parser.parse(reqInfo.request);
+			
+			if (parseResult.rc != STAFResult.Ok) {
+				result = new STAFResult(STAFResult.InvalidRequestString, parseResult.errorBuffer);
+			}
 		}
 	
 		return result;
@@ -81,6 +96,22 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 	 * @return the trust level.
 	 */
 	protected abstract int getTrustLevel();
+
+
+	/**
+	 * Creates a list of space delimited elements.
+	 * @param options - a list of options
+	 * @return the list
+	 */
+	protected final String getList(String... options) {
+		StringBuilder result = new StringBuilder(options[0]);
+		
+		for (int i = 1; i < options.length; i++) {
+			result.append(" ").append(options[i]);
+		}
+		
+		return result.toString();
+	}
 
 
 	/**
