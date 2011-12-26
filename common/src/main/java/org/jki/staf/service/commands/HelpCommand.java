@@ -1,7 +1,5 @@
-package org.jki.staf.service.irc.commands;
+package org.jki.staf.service.commands;
 
-import org.jki.staf.service.commands.ServiceCommand;
-import org.jki.staf.service.commands.AbstractServiceCommand;
 
 import com.ibm.staf.STAFResult;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30.InitInfo;

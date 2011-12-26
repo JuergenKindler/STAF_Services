@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jki.staf.service.commands.HelpCommand;
 import org.jki.staf.service.commands.ServiceCommand;
+import org.jki.staf.service.commands.VersionCommand;
 import org.jki.staf.service.irc.commands.CreateServerCommand;
-import org.jki.staf.service.irc.commands.HelpCommand;
-import org.jki.staf.service.irc.commands.VersionCommand;
 import org.jki.staf.service.util.ActionExtractor;
 import org.jki.staf.service.util.DefaultErrorHandler;
 
