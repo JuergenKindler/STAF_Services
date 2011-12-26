@@ -74,4 +74,10 @@ public class CreateServerCommand extends AbstractServiceCommand implements
 		parser.addOptionNeed(withPortList, CREATE);
 		parser.addOptionNeed(withPortRange, CREATE);
 	}
+
+
+	@Override
+	public String getCommandHelp() {
+		return "CREATE";
+	}
 }

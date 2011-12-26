@@ -9,7 +9,7 @@ import org.jki.staf.service.util.VersionReader;
 /**
  * A command to return the version of the service.
  */
-public class VersionCommand extends AbstractServiceCommand implements ServiceCommand {
+public final class VersionCommand extends AbstractServiceCommand implements ServiceCommand {
 	private VersionReader reader;
 	
 	/**
@@ -40,5 +40,10 @@ public class VersionCommand extends AbstractServiceCommand implements ServiceCom
 	@Override
 	protected int getTrustLevel() {
 		return 1;
+	}
+
+	@Override
+	public String getCommandHelp() {
+		return name;
 	}
 }

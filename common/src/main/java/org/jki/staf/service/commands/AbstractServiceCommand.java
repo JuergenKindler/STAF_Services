@@ -19,6 +19,11 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 	protected String name;
 
 	/**
+	 * The help of the command
+	 */
+	protected String help;
+
+	/**
 	 * The name of the local machine (where the service is installed)
 	 */
 	protected String localMachineName;
@@ -89,6 +94,9 @@ public abstract class AbstractServiceCommand implements ServiceCommand {
 	public final String getCommandName() {
 		return name;
 	}
+
+	@Override
+	public abstract String getCommandHelp();
 
 
 	/**

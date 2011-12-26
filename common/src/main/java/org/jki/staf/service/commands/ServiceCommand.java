@@ -35,4 +35,10 @@ public interface ServiceCommand {
 	 * @return the command name
 	 */
 	String getCommandName();
+
+	/**
+	 * Return the help string of the command
+	 * @return the help
+	 */
+	String getCommandHelp();
 }

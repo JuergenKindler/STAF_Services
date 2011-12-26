@@ -35,17 +35,14 @@ public class HelpCommand extends AbstractServiceCommand implements ServiceComman
 		return result;
 	}
 
-	/**
-	 * Returns the help string.
-	 * @return the help
-	 */
-	public String getHelpString() {
-		return helpString;
-	}
-
     /** {@inheritDoc}*/
 	@Override
 	protected int getTrustLevel() {
 		return 1;
+	}
+
+	@Override
+	public String getCommandHelp() {
+		return helpString;
 	}
 }
