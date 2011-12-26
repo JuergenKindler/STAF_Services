@@ -144,12 +144,18 @@ public class IrcService implements STAFServiceInterfaceLevel30, ConnectionHolder
 	 * Create and register all commands
 	 */
 	private void setupCommands() {
-		commands.put(ServiceCommand.HELP
-				, new HelpCommand(ServiceCommand.HELP, localMachineName, initInfo, HELP_MSG));
 		commands.put(ServiceCommand.VERSION
 				, new VersionCommand(ServiceCommand.VERSION, localMachineName, initInfo));
 		commands.put(ServiceCommand.CREATE
 				, new CreateServerCommand(ServiceCommand.CREATE, localMachineName, initInfo, this));
+
+		List<ServiceCommand> helpCommands = new ArrayList<ServiceCommand>();
+		for (ServiceCommand cmd : commands.values()) {
+			helpCommands.add(cmd);
+		}
+		
+		commands.put(ServiceCommand.HELP
+				, new HelpCommand(ServiceCommand.HELP, localMachineName, initInfo, helpCommands));
 	}
 
 	
