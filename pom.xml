@@ -63,7 +63,7 @@
 				<plugin>
 					<groupId>org.easyb</groupId>
 					<artifactId>maven-easyb-plugin</artifactId>
-					<version>0.9.7-1</version>
+					<version>1.4</version>
 					<configuration>
 						<easybTestDirectory>${easyb.test.sources}</easybTestDirectory>
 						<includes>
