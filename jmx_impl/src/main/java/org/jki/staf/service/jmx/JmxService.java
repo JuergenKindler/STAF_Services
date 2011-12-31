@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jki.staf.service.GenericStafService;
+import org.jki.staf.service.ReturnCode;
 import org.jki.staf.service.commands.HelpCommand;
 import org.jki.staf.service.commands.ServiceCommand;
 import org.jki.staf.service.commands.VersionCommand;
@@ -14,7 +15,9 @@ import org.jki.staf.service.jmx.commands.ListLocalServers;
 import org.jki.staf.service.jmx.commands.QueryServerCommand;
 import org.jki.staf.service.jmx.vmtools.VMInfo;
 
+import com.ibm.staf.STAFResult;
 import com.ibm.staf.service.STAFServiceInterfaceLevel30;
+import com.ibm.staf.service.STAFServiceInterfaceLevel30.InitInfo;
 
 /**
  * A service that allows to lookup local jmx servers communicate with them.
@@ -29,8 +32,9 @@ public class JmxService extends GenericStafService implements
 	public JmxService() {
 		super();
 		vms = new VMInfo();
+		codes = new ReturnCode[] { ReturnCode.ServerNotFound };
 	}
-
+	
 	/**
 	 * Create and register all commands
 	 */
