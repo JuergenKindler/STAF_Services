@@ -11,6 +11,8 @@ import org.jki.staf.service.commands.HelpCommand;
 import org.jki.staf.service.commands.ServiceCommand;
 import org.jki.staf.service.commands.VersionCommand;
 import org.jki.staf.service.jmx.commands.ListLocalServers;
+import org.jki.staf.service.jmx.commands.QueryServerCommand;
+import org.jki.staf.service.jmx.vmtools.VMInfo;
 
 import com.ibm.staf.service.STAFServiceInterfaceLevel30;
 
@@ -19,11 +21,14 @@ import com.ibm.staf.service.STAFServiceInterfaceLevel30;
  */
 public class JmxService extends GenericStafService implements
 		STAFServiceInterfaceLevel30 {
+	private VMInfo vms;
+	
 	/**
 	 * Default constructor.
 	 */
 	public JmxService() {
 		super();
+		vms = new VMInfo();
 	}
 
 	/**
@@ -34,7 +39,10 @@ public class JmxService extends GenericStafService implements
 				ServiceCommand.VERSION, localMachineName, initInfo));
 
 		commands.put(ServiceCommand.LIST, new ListLocalServers(
-				ServiceCommand.LIST, localMachineName, initInfo));
+				ServiceCommand.LIST, localMachineName, initInfo, vms));
+
+		commands.put(ServiceCommand.QUERY, new QueryServerCommand(
+				ServiceCommand.QUERY, localMachineName, initInfo, vms));
 
 		List<ServiceCommand> helpCommands = new ArrayList<ServiceCommand>();
 		for (ServiceCommand cmd : commands.values()) {

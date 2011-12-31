@@ -7,6 +7,7 @@ import com.sun.tools.attach.VirtualMachineDescriptor;
 
 import org.jki.staf.service.commands.AbstractServiceCommand;
 import org.jki.staf.service.commands.ServiceCommand;
+import org.jki.staf.service.jmx.vmtools.VMInfo;
 
 import com.ibm.staf.STAFMarshallingContext;
 import com.ibm.staf.STAFResult;
@@ -18,51 +19,44 @@ public class ListLocalServers extends AbstractServiceCommand implements
 		ServiceCommand {
 
 	private static final String DISPLAY_NAME = "DISPLAY_NAME";
-
+	private VMInfo vms;
 
 	public ListLocalServers(String commandName, String machineName,
-			InitInfo initInfo) {
+			InitInfo initInfo, VMInfo vms) {
 		super(commandName, machineName, initInfo);
+		this.vms = vms;
 	}
 
-
-	/** {@inheritDoc}*/
+	/** {@inheritDoc} */
 	@Override
 	public STAFResult execute(final RequestInfo reqInfo) {
 		STAFResult result = super.execute(reqInfo);
-		List<String> idList = new ArrayList<String>();
-		
+
 		if (result.rc == STAFResult.Ok) {
-			List<VirtualMachineDescriptor> list = VirtualMachine.list();
-			
-			for (VirtualMachineDescriptor vm : list) {
-				idList.add((parseResult.optionTimes(DISPLAY_NAME) > 0) ? vm.displayName() : vm.id());
-			}
-			String marshalledList = STAFMarshallingContext.marshall(idList, null);
+			List<String> l = (parseResult.optionTimes(DISPLAY_NAME) > 0) ? 
+					vms.getVmDisplayNames() : vms.getVmIds();
+			String marshalledList = STAFMarshallingContext.marshall(l, null);
 			result.result = marshalledList;
 		}
-	
+
 		return result;
 	}
-
 
 	@Override
 	public String getCommandHelp() {
 		return getCommandName() + " [" + DISPLAY_NAME + "]";
 	}
 
-
 	@Override
 	protected int getTrustLevel() {
-		return 5;
+		return 4;
 	}
-
 
 	/**
 	 * Sets up the command parser.
 	 */
 	protected void setupParser() {
 		super.setupParser();
-		parser.addOption(DISPLAY_NAME, 0, STAFCommandParser.VALUENOTALLOWED); 
+		parser.addOption(DISPLAY_NAME, 0, STAFCommandParser.VALUENOTALLOWED);
 	}
 }
