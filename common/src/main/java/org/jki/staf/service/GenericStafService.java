@@ -1,7 +1,7 @@
 package org.jki.staf.service;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.jki.staf.service.commands.ServiceCommand;
 import org.jki.staf.service.util.ActionExtractor;
@@ -19,23 +19,66 @@ import com.ibm.staf.service.STAFServiceInterfaceLevel30;
  * @author ngjo
  */
 public abstract class GenericStafService implements STAFServiceInterfaceLevel30 {
-	protected static String CR = System.getProperty("line.separator");
-	protected String serviceName = getClass().getSimpleName();
-	protected String helpMessage = "*** " + serviceName + " Service Help ***"
-			+ CR + CR + ServiceCommand.VERSION + CR + ServiceCommand.HELP + CR;
-	protected InitInfo initInfo;
-	protected STAFHandle handle;
-	protected DefaultErrorHandler errorHandler;
-	protected ActionExtractor extractor;
-	protected Map<String, ServiceCommand> commands;
-	protected String localMachineName;
-	protected ReturnCode[] codes;
+	/**
+	 * A short cut for a line separator
+	 */
+	protected final static String CR = System.getProperty("line.separator");
 
+	/**
+	 * The service name is the simple name of the class
+	 */
+	protected String serviceName = getClass().getSimpleName();
+
+	/**
+	 * The default help message
+	 */
+	protected String helpMessage = "*** " + serviceName + " Service Help ***"
+			+ CR + ServiceCommand.VERSION + CR + ServiceCommand.HELP + CR;
+
+	/**
+	 * The staf internal init info
+	 */
+	protected InitInfo initInfo;
+
+	/**
+	 * The service's staf handle
+	 */
+	protected STAFHandle handle;
+
+	/**
+	 * The handler to cover exceptions
+	 */
+	protected DefaultErrorHandler errorHandler;
+
+	/**
+	 * The helper that extracts an action from a STAF request
+	 */
+	protected ActionExtractor extractor;
+
+	/**
+	 * The map of all service commands.
+	 */
+	protected Map<String, ServiceCommand> commands;
+
+	/**
+	 * The name of the local machine.
+	 */
+	protected String localMachineName;
+
+	/**
+	 * The list of all known return codes.
+	 */
+	protected Map<Integer,ReturnCode> codes;
+
+	/**
+	 * Create a generic service
+	 */
 	public GenericStafService() {
 		super();
 		errorHandler = new DefaultErrorHandler(serviceName);
 		extractor = new ActionExtractor();
-		commands = new HashMap<String, ServiceCommand>();
+		commands = new TreeMap<String, ServiceCommand>();
+		codes = new TreeMap<Integer, ReturnCode>();
 	}
 
 	/** {@inheritDoc} */
@@ -53,7 +96,7 @@ public abstract class GenericStafService implements STAFServiceInterfaceLevel30 
 			} else {
 				result = new STAFResult(STAFResult.InvalidRequestString, "'"
 						+ action + "' is not a valid command request for the "
-						+ serviceName + " service" + CR + CR + helpMessage);
+						+ serviceName + " service" + CR + helpMessage);
 			}
 		} catch (Exception ex) {
 			result = errorHandler.handleException(reqInfo, ex);
@@ -82,7 +125,7 @@ public abstract class GenericStafService implements STAFServiceInterfaceLevel30 
 			} else {
 				localMachineName = res.result;
 				
-				for (ReturnCode code : codes) {
+				for (ReturnCode code : codes.values()) {
 					registerCode(code);
 				}
 				setupCommands();
@@ -101,19 +144,31 @@ public abstract class GenericStafService implements STAFServiceInterfaceLevel30 
 	protected abstract void setupCommands();
 
 	/**
+	 * Add one or more codes to the internal map of codes.
+	 * @param code - one or more return codes.
+	 */
+	protected final void addCode(ReturnCode... code) {
+		for (ReturnCode co : code) {
+			codes.put(new Integer(co.getRC()), co);
+		}
+	}
+
+	/**
 	 * Register error number in help system.
 	 * @param code - the code to register
+	 * @return the result of registering a new return code.
 	 */
 	protected STAFResult registerCode(ReturnCode code) {
 		return handle.submit2("local", "HELP",
 				"REGISTER SERVICE " + serviceName + " ERROR " + code.getRC()
-						+ " INFO " + STAFUtil.wrapData(code.name()) + " DESCRIPTION "
+						+ " INFO " + STAFUtil.wrapData(code.getMessage() + " (" + code.name() + ")") + " DESCRIPTION "
 						+ STAFUtil.wrapData(code.getMessage()));
 	}
 
 	/**
 	 * Unregister error number.
 	 * @param code - the error code to unregister
+	 * @return the result of the unregister operation
 	 */
 	protected STAFResult unregisterCode(ReturnCode code) {
 		return handle.submit2("local", "HELP", "UNREGISTER SERVICE "
@@ -123,7 +178,7 @@ public abstract class GenericStafService implements STAFServiceInterfaceLevel30 
 	/** {@inheritDoc} */
 	public STAFResult term() {
 		try {
-			for (ReturnCode code : codes) {
+			for (ReturnCode code : codes.values()) {
 				unregisterCode(code);
 			}
 

@@ -42,6 +42,7 @@ public final class VersionCommand extends AbstractServiceCommand implements Serv
 		return 1;
 	}
 
+    /** {@inheritDoc}*/
 	@Override
 	public String getCommandHelp() {
 		return name;

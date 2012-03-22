@@ -62,13 +62,7 @@ public class DefaultErrorHandler {
 	}
 	
 	private void log(String message, Throwable thr) {
-		System.out.println(df.format(new Date()) + " : " + message + toStacktrace(thr) + CR);
-	}
-
-	private String toStacktrace(Throwable thr) {
-		StringWriter sr = new StringWriter();
-		thr.printStackTrace(new PrintWriter(sr));
-		return sr.toString();
+		System.out.println(df.format(new Date()) + " : " + message + ExceptionToStacktraceString.toStacktrace(thr) + CR);
 	}
 
 	private String createErrorMessage(@SuppressWarnings("rawtypes") Class errorType, String request) {
@@ -79,9 +73,9 @@ public class DefaultErrorHandler {
 		STAFResult result;
 
 		if (thr.getMessage() != null) {
-			result = new STAFResult(STAFResult.JavaError, thr.getMessage() + CR + toStacktrace(thr));
+			result = new STAFResult(STAFResult.JavaError, thr.getMessage() + CR + ExceptionToStacktraceString.toStacktrace(thr));
 		} else {
-			result = new STAFResult(STAFResult.JavaError, toStacktrace(thr));
+			result = new STAFResult(STAFResult.JavaError, ExceptionToStacktraceString.toStacktrace(thr));
 		}
 		
 		return result;

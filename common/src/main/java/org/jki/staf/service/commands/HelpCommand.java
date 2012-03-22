@@ -45,12 +45,13 @@ public class HelpCommand extends AbstractServiceCommand implements
 		return 1;
 	}
 
+	/** {@inheritDoc}*/
 	@Override
 	public String getCommandHelp() {
 		StringBuffer help = new StringBuffer();
 		for (ServiceCommand cmd : commands) {
 			help.append(cmd.getCommandHelp());
-			help.append("\n\n");
+			help.append(System.getProperty("line.separator"));
 		}
 		help.append("HELP");
 		return help.toString();
