@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
+import javax.management.MBeanOperationInfo;
+import javax.management.MBeanParameterInfo;
 import javax.management.MBeanServerConnection;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
@@ -29,7 +31,7 @@ import com.sun.tools.attach.VirtualMachineDescriptor;
 /**
  * @author jkindler
  */
-public class ListAttributesAction implements CommandAction {
+public class ListOperationsAction implements CommandAction {
 	private static final Logger LOG = Logger.getLogger(ListCommand.class.getSimpleName());
 	private VMInfo vms;
 	private STAFMapClassDefinition resultMapModel;
@@ -46,13 +48,13 @@ public class ListAttributesAction implements CommandAction {
 	 * @param vms
 	 *            - the virtual machine info
 	 */
-	public ListAttributesAction(VMInfo vms) {
+	public ListOperationsAction(VMInfo vms) {
 		this.vms = vms;
-		this.resultMapModel = new STAFMapClassDefinition("STAF/Service/JMX/ListMBeanAttributes");
+		this.resultMapModel = new STAFMapClassDefinition("STAF/Service/JMX/ListMBeanOperations");
 		this.resultMapModel.addKey(Constants.VMID, Constants.T_VIRTUAL_MACHINE_ID);
 		this.resultMapModel.addKey(Constants.DISPLAY_NAME, Constants.T_DISPLAY_NAME);
 		this.resultMapModel.addKey(Constants.OBJECT, Constants.T_MBEAN_OBJECT);
-		this.resultMapModel.addKey(Constants.ATTRIBUTES, Constants.T_MBEAN_ATTRIBUTES);
+		this.resultMapModel.addKey(Constants.OPERATIONS, Constants.T_MBEAN_OPERATIONS);
 	}
 
 	/** {@inheritDoc} */
@@ -68,11 +70,11 @@ public class ListAttributesAction implements CommandAction {
 		String objectNameString = parseResult.optionValue(Constants.OBJECT, 1);
 
 		try {
-			LOG.info("Looking for MBean '" + objectNameString + "'");
+			LOG.info("Looking for operations of MBean '" + objectNameString + "'");
 			ObjectName beanObjectName = new ObjectName(objectNameString);
 			MBeanServerConnection mbc = connector.connect();
 			MBeanInfo mbi = mbc.getMBeanInfo(beanObjectName);
-			result = createMachineResult(vmd, beanObjectName, mbi.getAttributes());
+			result = createMachineResult(vmd, beanObjectName, mbi.getOperations());
 
 		} catch (MBeanServerConnectionException mbscx) {
 			result = buildFailureStatus(mbscx.getCode(), vmd);
@@ -108,7 +110,7 @@ public class ListAttributesAction implements CommandAction {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private STAFResult createMachineResult(VirtualMachineDescriptor vmd, ObjectName object, MBeanAttributeInfo[] attr) {
+	private STAFResult createMachineResult(VirtualMachineDescriptor vmd, ObjectName object, MBeanOperationInfo[] ops) {
 		STAFMarshallingContext mc = new STAFMarshallingContext();
 		mc.setMapClassDefinition(resultMapModel);
 		Map resultMap = resultMapModel.createInstance();
@@ -116,19 +118,34 @@ public class ListAttributesAction implements CommandAction {
 		resultMap.put(Constants.DISPLAY_NAME, vmd.displayName());
 		resultMap.put(Constants.OBJECT, object.getCanonicalName());
 
-		List<String> attributes = new ArrayList<String>();
-		for (MBeanAttributeInfo ai : attr) {
-			attributes.add(ai.getName());
+		List<String> operations = new ArrayList<String>();
+		for (MBeanOperationInfo op : ops) {
+			LOG.info("Operation: " + op.toString());
+			operations.add(getOperationSignature(op));
 		}
-		resultMap.put(Constants.ATTRIBUTES, attributes);
+		resultMap.put(Constants.OPERATIONS, operations);
 		mc.setRootObject(resultMap);
 		return new STAFResult(STAFResult.Ok, mc.marshall());
+	}
+	
+	private String getOperationSignature(MBeanOperationInfo oi) {
+		String comma = "";
+		StringBuilder sb = new StringBuilder(oi.getReturnType());
+		sb.append(" ").append(oi.getName()).append("(");
+
+		MBeanParameterInfo[] pil = oi.getSignature();
+		for (MBeanParameterInfo pi : pil) {
+			sb.append(comma).append(pi.getType()).append(" ").append(pi.getName());
+			comma = ",";
+		}
+		sb.append(")");
+		return sb.toString();
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String getCommandHelp() {
-		return Constants.ATTRIBUTES + " " + Constants.VMID + " <" + Constants.T_VIRTUAL_MACHINE_ID + "> " + Constants.OBJECT
+		return Constants.OPERATIONS + " " + Constants.VMID + " <" + Constants.T_VIRTUAL_MACHINE_ID + "> " + Constants.OBJECT
 				+ " <" + Constants.T_MBEAN_OBJECT + ">";
 	}
 }

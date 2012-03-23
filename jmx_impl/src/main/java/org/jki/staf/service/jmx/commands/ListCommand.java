@@ -12,6 +12,7 @@ import org.jki.staf.service.commands.CommandAction;
 import org.jki.staf.service.commands.ServiceCommand;
 import org.jki.staf.service.jmx.commands.list.ListAttributesAction;
 import org.jki.staf.service.jmx.commands.list.ListObjectsAction;
+import org.jki.staf.service.jmx.commands.list.ListOperationsAction;
 import org.jki.staf.service.jmx.commands.list.ListServersAction;
 import org.jki.staf.service.jmx.vmtools.VMInfo;
 
@@ -22,15 +23,8 @@ import com.ibm.staf.service.STAFServiceInterfaceLevel30.RequestInfo;
 
 /**
  * @author jkindler
- * 
  */
-public class ListCommand extends AbstractServiceCommand implements ServiceCommand {
-	public static final String ATTRIBUTES = "ATTRIBUTES";
-	public static final String DISPLAY_NAME = "DISPLAY_NAME";
-	public static final String OBJECT = "OBJECT";
-	public static final String OBJECTS = OBJECT + "S";
-	public static final String VMID = "VMID";
-	public static final String VMIDS = VMID + "S";
+public class ListCommand extends AbstractServiceCommand implements ServiceCommand, Constants {
 	private static final Logger LOG = Logger.getLogger(ListCommand.class.getSimpleName());
 
 	private static final String CR = System.getProperty("line.separator");
@@ -38,7 +32,7 @@ public class ListCommand extends AbstractServiceCommand implements ServiceComman
 	private String help;
 
 	/**
-	 * Create a wrapper for all variations of listing items
+	 * Create a wrapper for all variations of listing items.
 	 * 
 	 * @param name - the command name
 	 * @param machineName - the command name in staf
@@ -52,8 +46,10 @@ public class ListCommand extends AbstractServiceCommand implements ServiceComman
 		subCommands = new HashMap<String, CommandAction>();
 		subCommands.put(VMIDS, new ListServersAction(vms));
 		subCommands.put(ATTRIBUTES, new ListAttributesAction(vms));
+		subCommands.put(OPERATIONS, new ListOperationsAction(vms));
 		subCommands.put(OBJECTS, new ListObjectsAction(vms));
 	}
+
 
 	/** {@inheritDoc} */
 	@Override
@@ -79,7 +75,8 @@ public class ListCommand extends AbstractServiceCommand implements ServiceComman
 		}
 		return result;
 	}
-	
+
+
 	/** {@inheritDoc} */
 	@Override
 	public String getCommandHelp() {
@@ -100,21 +97,23 @@ public class ListCommand extends AbstractServiceCommand implements ServiceComman
 		 * LIST VMIDS [DISPLAY_NAME]
 		 * LIST OBJECTS VMID <id>
 		 * LIST ATTRIBUTES VMID <id> OBJECT <objectName>
+		 * LIST METHODS VMID <id> OBJECT <objectName>
 		 */
 		super.setupParser();
 		parser.addOption(VMIDS, 0, STAFCommandParser.VALUENOTALLOWED);
 		parser.addOption(OBJECTS, 0, STAFCommandParser.VALUENOTALLOWED);
 		parser.addOption(ATTRIBUTES, 0, STAFCommandParser.VALUENOTALLOWED);
-		parser.addOptionGroup(getList(VMIDS, OBJECTS, ATTRIBUTES), 1, 1);
+		parser.addOption(OPERATIONS, 0, STAFCommandParser.VALUENOTALLOWED);
+		parser.addOptionGroup(getList(VMIDS, OBJECTS, ATTRIBUTES, OPERATIONS), 1, 1);
 		
 		parser.addOption(DISPLAY_NAME, 0, STAFCommandParser.VALUENOTALLOWED);
 //		parser.addOptionNeed(DISPLAY_NAME, VMIDS);
 		
 		parser.addOption(VMID, 1, STAFCommandParser.VALUEREQUIRED);
-		parser.addOptionNeed(VMID, getList(OBJECTS, ATTRIBUTES));
+		parser.addOptionNeed(VMID, getList(OBJECTS, ATTRIBUTES, OPERATIONS));
 
 		parser.addOption(OBJECT, 1, STAFCommandParser.VALUEREQUIRED);
-		parser.addOptionNeed(ATTRIBUTES, OBJECT);
+		parser.addOptionNeed(getList(ATTRIBUTES, OPERATIONS), OBJECT);
 	}
 
 

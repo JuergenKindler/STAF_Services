@@ -18,12 +18,8 @@ import com.sun.tools.attach.VirtualMachineDescriptor;
 
 /**
  * @author jkindler
- * 
  */
 public class QueryServerCommand extends AbstractServiceCommand implements ServiceCommand {
-	private static final String PROVIDER = "Provider";
-	private static final String ID = "VM_ID";
-	private static final String DISPLAY_NAME = "DisplayName";
 	private VMInfo vms;
 	private STAFMapClassDefinition resultMapModel;
 
@@ -43,9 +39,9 @@ public class QueryServerCommand extends AbstractServiceCommand implements Servic
 		super(commandName, machineName, initInfo);
 		this.vms = vms;
 		this.resultMapModel = new STAFMapClassDefinition("STAF/Service/JMX/QueryServer");
-		this.resultMapModel.addKey(ID, "VM identifier");
-		this.resultMapModel.addKey(DISPLAY_NAME, "Display name");
-		this.resultMapModel.addKey(PROVIDER, "Attached provider");
+		this.resultMapModel.addKey(Constants.VMID, Constants.T_VIRTUAL_MACHINE_ID);
+		this.resultMapModel.addKey(Constants.DISPLAY_NAME, Constants.T_DISPLAY_NAME);
+		this.resultMapModel.addKey(Constants.PROVIDER, Constants.T_PROVIDER);
 	}
 
 	/** {@inheritDoc} */
@@ -54,11 +50,11 @@ public class QueryServerCommand extends AbstractServiceCommand implements Servic
 		STAFResult result = super.execute(reqInfo);
 
 		if (result.rc == STAFResult.Ok) {
-			String requestedID = parseResult.optionValue(ID, 1);
+			String requestedID = parseResult.optionValue(Constants.VMID, 1);
 			List<VirtualMachineDescriptor> vmList = vms.getVMDescriptors();
 
 			result.rc = ReturnCode.ServerNotFound.getRC();
-			result.result = ReturnCode.ServerNotFound.getMessage() + " " + ID + " = " + requestedID;
+			result.result = ReturnCode.ServerNotFound.getMessage() + " " + Constants.VMID + " = " + requestedID;
 
 			VirtualMachineDescriptor vmd = vms.getVmd(requestedID);
 			result = (vmd != null) ? createMachineResult(vmd) : result;
@@ -72,9 +68,9 @@ public class QueryServerCommand extends AbstractServiceCommand implements Servic
 		STAFMarshallingContext mc = new STAFMarshallingContext();
 		mc.setMapClassDefinition(resultMapModel);
 		Map resultMap = resultMapModel.createInstance();
-		resultMap.put(ID, vmd.id());
-		resultMap.put(DISPLAY_NAME, vmd.displayName());
-		resultMap.put(PROVIDER, vmd.provider().name() + " (" + vmd.provider().type() + ")");
+		resultMap.put(Constants.VMID, vmd.id());
+		resultMap.put(Constants.DISPLAY_NAME, vmd.displayName());
+		resultMap.put(Constants.PROVIDER, vmd.provider().name() + " (" + vmd.provider().type() + ")");
 		mc.setRootObject(resultMap);
 		return new STAFResult(STAFResult.Ok, mc.marshall());
 	}
@@ -82,7 +78,7 @@ public class QueryServerCommand extends AbstractServiceCommand implements Servic
 	/** {@inheritDoc} */
 	@Override
 	public String getCommandHelp() {
-		return getCommandName() + " " + ID + " <VirtualMachineID>";
+		return getCommandName() + " " + Constants.VMID + " <" + Constants.T_VIRTUAL_MACHINE_ID + ">";
 	}
 
 	/** {@inheritDoc} */
@@ -96,6 +92,6 @@ public class QueryServerCommand extends AbstractServiceCommand implements Servic
 	 */
 	protected void setupParser() {
 		super.setupParser();
-		parser.addOption(ID, 0, STAFCommandParser.VALUEREQUIRED);
+		parser.addOption(Constants.VMID, 0, STAFCommandParser.VALUEREQUIRED);
 	}
 }

@@ -15,6 +15,7 @@ import javax.management.ObjectName;
 import org.jki.staf.service.ReturnCode;
 import org.jki.staf.service.commands.CommandAction;
 import org.jki.staf.service.jmx.commands.ListCommand;
+import org.jki.staf.service.jmx.commands.Constants;
 import org.jki.staf.service.jmx.vmtools.MBeanServerConnectionException;
 import org.jki.staf.service.jmx.vmtools.MBeanServerConnector;
 import org.jki.staf.service.jmx.vmtools.VMInfo;
@@ -49,9 +50,9 @@ public class ListObjectsAction implements CommandAction {
 	public ListObjectsAction(VMInfo vms) {
 		this.vms = vms;
 		this.resultMapModel = new STAFMapClassDefinition("STAF/Service/JMX/ListMBeanObjects");
-		this.resultMapModel.addKey(ListCommand.VMID, "VM Identifier");
-		this.resultMapModel.addKey(ListCommand.DISPLAY_NAME, "VM display name");
-		this.resultMapModel.addKey(ListCommand.OBJECTS, "MBean Objects");
+		this.resultMapModel.addKey(Constants.VMID, Constants.T_VIRTUAL_MACHINE_ID);
+		this.resultMapModel.addKey(Constants.DISPLAY_NAME, Constants.T_DISPLAY_NAME);
+		this.resultMapModel.addKey(Constants.OBJECTS, Constants.T_MBEAN_OBJECTS);
 	}
 
 	/** {@inheritDoc} */
@@ -59,7 +60,7 @@ public class ListObjectsAction implements CommandAction {
 	public STAFResult execute(final STAFCommandParseResult parseResult) {
 		STAFResult result = new STAFResult(STAFResult.Ok);
 		// Get the VM for the ID ...
-		String requestedVMID = parseResult.optionValue(ListCommand.VMID, 1);
+		String requestedVMID = parseResult.optionValue(Constants.VMID, 1);
 		VirtualMachineDescriptor vmd = vms.getVmd(requestedVMID);
 		MBeanServerConnector connector = new MBeanServerConnector(vmd);
 
@@ -101,14 +102,14 @@ public class ListObjectsAction implements CommandAction {
 		STAFMarshallingContext mc = new STAFMarshallingContext();
 		mc.setMapClassDefinition(resultMapModel);
 		Map resultMap = resultMapModel.createInstance();
-		resultMap.put(ListCommand.VMID, vmd.id());
-		resultMap.put(ListCommand.DISPLAY_NAME, vmd.displayName());
+		resultMap.put(Constants.VMID, vmd.id());
+		resultMap.put(Constants.DISPLAY_NAME, vmd.displayName());
 
 		List<String> objects = new ArrayList<String>();
 		for (ObjectName on : objectNames) {
 			objects.add(on.getCanonicalName());
 		}
-		resultMap.put(ListCommand.OBJECTS, objects);
+		resultMap.put(Constants.OBJECTS, objects);
 		mc.setRootObject(resultMap);
 		return new STAFResult(STAFResult.Ok, mc.marshall());
 	}
@@ -116,6 +117,6 @@ public class ListObjectsAction implements CommandAction {
 	/** {@inheritDoc} */
 	@Override
 	public String getCommandHelp() {
-		return ListCommand.OBJECTS + " " + ListCommand.VMID + " <VirtualMachineID> ";
+		return Constants.OBJECTS + " " + Constants.VMID + " <" + Constants.T_VIRTUAL_MACHINE_ID + "> ";
 	}
 }

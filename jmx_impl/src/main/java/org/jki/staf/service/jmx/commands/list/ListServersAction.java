@@ -3,7 +3,7 @@ package org.jki.staf.service.jmx.commands.list;
 import java.util.List;
 
 import org.jki.staf.service.commands.CommandAction;
-import org.jki.staf.service.jmx.commands.ListCommand;
+import org.jki.staf.service.jmx.commands.Constants;
 import org.jki.staf.service.jmx.vmtools.VMInfo;
 
 import com.ibm.staf.STAFMarshallingContext;
@@ -34,7 +34,7 @@ public class ListServersAction implements CommandAction {
 		STAFResult result = new STAFResult(STAFResult.Ok);
 
 		if (result.rc == STAFResult.Ok) {
-			List<String> l = (parseResult.optionTimes(ListCommand.DISPLAY_NAME) > 0) ? vms.getVmDisplayNames() : vms.getVmIds();
+			List<String> l = (parseResult.optionTimes(Constants.DISPLAY_NAME) > 0) ? vms.getVmDisplayNames() : vms.getVmIds();
 			String marshalledList = STAFMarshallingContext.marshall(l, null);
 			result.result = marshalledList;
 		}
@@ -45,6 +45,6 @@ public class ListServersAction implements CommandAction {
 	/** {@inheritDoc} */
 	@Override
 	public String getCommandHelp() {
-		return ListCommand.VMIDS + " [" + ListCommand.DISPLAY_NAME + "]";
+		return Constants.VMIDS + " [" + Constants.DISPLAY_NAME + "]";
 	}
 }

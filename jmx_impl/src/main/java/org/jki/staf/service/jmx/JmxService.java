@@ -25,6 +25,7 @@ public class JmxService extends GenericStafService implements STAFServiceInterfa
 	 */
 	public JmxService() {
 		super();
+		serviceName = "JMX";
 		vms = new VMInfo();
 		addCode(ReturnCode.ServerNotFound, ReturnCode.ServerAttachFailed, ReturnCode.ServerHasNoConnectorAddress,
 				ReturnCode.ServerCommunicationError, ReturnCode.MBeanObjectIDInvalid, ReturnCode.MBeanDoesNotExist,
