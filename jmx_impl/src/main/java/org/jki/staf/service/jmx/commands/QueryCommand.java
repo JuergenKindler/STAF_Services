@@ -10,9 +10,8 @@ import java.util.logging.Logger;
 import org.jki.staf.service.commands.AbstractServiceCommand;
 import org.jki.staf.service.commands.CommandAction;
 import org.jki.staf.service.commands.ServiceCommand;
-import org.jki.staf.service.jmx.commands.list.ListAttributesAction;
-import org.jki.staf.service.jmx.commands.list.ListObjectsAction;
-import org.jki.staf.service.jmx.commands.list.ListServersAction;
+import org.jki.staf.service.jmx.commands.query.QueryAttributesAction;
+import org.jki.staf.service.jmx.commands.query.QueryOperationsAction;
 import org.jki.staf.service.jmx.vmtools.VMInfo;
 
 import com.ibm.staf.STAFResult;
@@ -31,7 +30,7 @@ public class QueryCommand extends AbstractServiceCommand implements ServiceComma
 	private String help;
 
 	/**
-	 * Create a wrapper for all variations of listing items.
+	 * Create a wrapper for all variations of query items.
 	 * 
 	 * @param name - the command name
 	 * @param machineName - the command name in staf
@@ -43,9 +42,8 @@ public class QueryCommand extends AbstractServiceCommand implements ServiceComma
 		
 		// Add the different actions / command variations
 		subCommands = new HashMap<String, CommandAction>();
-		subCommands.put(VMIDS, new ListServersAction(vms));
-		subCommands.put(ATTRIBUTES, new ListAttributesAction(vms));
-		subCommands.put(OBJECTS, new ListObjectsAction(vms));
+		subCommands.put(ATTRIBUTE, new QueryAttributesAction(vms));
+		subCommands.put(OPERATION, new QueryOperationsAction(vms));
 	}
 
 

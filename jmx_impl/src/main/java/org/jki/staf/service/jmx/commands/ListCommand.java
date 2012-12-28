@@ -107,7 +107,6 @@ public class ListCommand extends AbstractServiceCommand implements ServiceComman
 		parser.addOptionGroup(getList(VMIDS, OBJECTS, ATTRIBUTES, OPERATIONS), 1, 1);
 		
 		parser.addOption(DISPLAY_NAME, 0, STAFCommandParser.VALUENOTALLOWED);
-//		parser.addOptionNeed(DISPLAY_NAME, VMIDS);
 		
 		parser.addOption(VMID, 1, STAFCommandParser.VALUEREQUIRED);
 		parser.addOptionNeed(VMID, getList(OBJECTS, ATTRIBUTES, OPERATIONS));
