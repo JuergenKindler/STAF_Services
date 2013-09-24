@@ -41,7 +41,6 @@ import com.sun.tools.attach.VirtualMachineDescriptor;
 public class QueryAttributesAction implements CommandAction {
 	private static final Logger LOG = Logger.getLogger(QueryCommand.class.getSimpleName());
 	private VMInfo vms;
-	private List<String> simpleTypes;
 	private STAFMapClassDefinition resultMapModel;
 	private STAFMapClassDefinition mBeanModel;
 	private STAFMapClassDefinition mBeanAttributeModel;
@@ -66,13 +65,6 @@ public class QueryAttributesAction implements CommandAction {
 		this.mBeanAttributeModel = new STAFMapClassDefinition("STAF/Service/JMX/MBeanAttributeEntry");
 		this.mBeanAttributeModel.addKey(Constants.ATTRIBUTE_NAME, Constants.T_MBEAN_ATTRIBUTE_NAME);
 		this.mBeanAttributeModel.addKey(Constants.ATTRIBUTE_VALUE, Constants.T_MBEAN_ATTRIBUTE_VALUE);
-		
-		this.simpleTypes = new ArrayList<String>();
-		for (String type : OpenType.ALLOWED_CLASSNAMES_LIST) {
-			if (!(type.startsWith("javax."))) {
-				this.simpleTypes.add(type);
-			}
-		}
 	}
 
 	/**
@@ -90,7 +82,7 @@ public class QueryAttributesAction implements CommandAction {
 		Set<ObjectName> objects = new TreeSet<ObjectName>();
 		for (ObjectName oName : mbc.queryNames(null, null)) {
 			if (oName.toString().matches(oNamePattern)) {
-				LOG.info("Selected object name " + oName.toString());
+				LOG.info("Selected object name " + oName.toString() + " using pattern " + oNamePattern);
 				objects.add(oName);
 			}
 		}
@@ -198,7 +190,7 @@ public class QueryAttributesAction implements CommandAction {
 
 	private boolean isAttributeMatch(MBeanAttributeInfo attr, String attributePattern) {
 		boolean isMatched = attr.isReadable() && attr.getName().matches(attributePattern);
-		return isMatched && simpleTypes.contains(attr.getType());
+		return isMatched && !(attr.getType().contains("CompositeData") || attr.getType().contains("TabularData"));
 	}
 
 	/*
