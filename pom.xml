@@ -94,7 +94,7 @@
 							</goals>
 							<configuration>
 								<outputDirectory>${project.build.directory}/classes/STAF-INF/classes</outputDirectory>
-								<excludeGroupIds>net.sf.staf</excludeGroupIds>
+								<excludeGroupIds>net.sf.staf,com.sun</excludeGroupIds>
 								<excludes>META-INF/**</excludes>
 							</configuration>
 						</execution>

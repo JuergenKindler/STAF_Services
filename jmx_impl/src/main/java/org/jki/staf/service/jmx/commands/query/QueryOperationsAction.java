@@ -41,7 +41,7 @@ public class QueryOperationsAction implements CommandAction {
 	@Override
 	public String getCommandHelp() {
 		return Constants.OPERATIONS + " " + Constants.VMID + " <" + Constants.T_VIRTUAL_MACHINE_ID + "> "
-				+ Constants.OBJECT + " <" + Constants.T_MBEAN_OBJECT + "> " + Constants.OPERATIONS + " <"
-				+ Constants.T_MBEAN_OPERATION + ">";
+				+ Constants.OBJECT + " <" + Constants.T_MBEAN_OBJECT + " pattern> " + Constants.OPERATIONS + " <"
+				+ Constants.T_MBEAN_OPERATION + " pattern>";
 	}
 }

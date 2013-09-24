@@ -9,7 +9,7 @@ import org.jki.staf.service.commands.HelpCommand;
 import org.jki.staf.service.commands.ServiceCommand;
 import org.jki.staf.service.commands.VersionCommand;
 import org.jki.staf.service.jmx.commands.ListCommand;
-import org.jki.staf.service.jmx.commands.QueryServerCommand;
+import org.jki.staf.service.jmx.commands.QueryCommand;
 import org.jki.staf.service.jmx.vmtools.VMInfo;
 
 import com.ibm.staf.service.STAFServiceInterfaceLevel30;
@@ -39,7 +39,7 @@ public class JmxService extends GenericStafService implements STAFServiceInterfa
 		commands.put(ServiceCommand.LIST, new ListCommand(ServiceCommand.LIST, localMachineName, initInfo, vms));
 
 		commands.put(ServiceCommand.QUERY,
-				new QueryServerCommand(ServiceCommand.QUERY, localMachineName, initInfo, vms));
+				new QueryCommand(ServiceCommand.QUERY, localMachineName, initInfo, vms));
 
 		commands.put(ServiceCommand.VERSION, new VersionCommand(ServiceCommand.VERSION, localMachineName, initInfo));
 

@@ -37,14 +37,10 @@ public class ListAttributesAction implements CommandAction {
 	/**
 	 * Create a command to list all attribute names of an MBean
 	 * 
-	 * @param commandName
-	 *            - the command name in staf
-	 * @param machineName
-	 *            - the name of the running machine
-	 * @param initInfo
-	 *            - staf internal initialization info
-	 * @param vms
-	 *            - the virtual machine info
+	 * @param commandName - the command name in staf
+	 * @param machineName - the name of the running machine
+	 * @param initInfo - staf internal initialization info
+	 * @param vms - the virtual machine info
 	 */
 	public ListAttributesAction(VMInfo vms) {
 		this.vms = vms;

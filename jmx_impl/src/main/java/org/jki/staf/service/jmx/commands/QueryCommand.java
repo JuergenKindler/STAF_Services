@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import org.jki.staf.service.commands.AbstractServiceCommand;
 import org.jki.staf.service.commands.CommandAction;
 import org.jki.staf.service.commands.ServiceCommand;
+import org.jki.staf.service.jmx.commands.query.QueryServerAction;
 import org.jki.staf.service.jmx.commands.query.QueryAttributesAction;
 import org.jki.staf.service.jmx.commands.query.QueryOperationsAction;
 import org.jki.staf.service.jmx.vmtools.VMInfo;
@@ -42,8 +43,9 @@ public class QueryCommand extends AbstractServiceCommand implements ServiceComma
 		
 		// Add the different actions / command variations
 		subCommands = new HashMap<String, CommandAction>();
-		subCommands.put(ATTRIBUTE, new QueryAttributesAction(vms));
-		subCommands.put(OPERATION, new QueryOperationsAction(vms));
+		subCommands.put(SERVER, new QueryServerAction(vms));
+		subCommands.put(ATTRIBUTES, new QueryAttributesAction(vms));
+		subCommands.put(OPERATIONS, new QueryOperationsAction(vms));
 	}
 
 
@@ -96,17 +98,19 @@ public class QueryCommand extends AbstractServiceCommand implements ServiceComma
 		 */
 		super.setupParser();
 		parser.addOption(VMIDS, 0, STAFCommandParser.VALUENOTALLOWED);
+		parser.addOption(SERVER, 0, STAFCommandParser.VALUENOTALLOWED);
 		parser.addOption(OBJECTS, 0, STAFCommandParser.VALUENOTALLOWED);
 		parser.addOption(ATTRIBUTES, 0, STAFCommandParser.VALUENOTALLOWED);
-		parser.addOptionGroup(getList(VMIDS, OBJECTS, ATTRIBUTES), 1, 1);
+		parser.addOptionGroup(getList(VMIDS, SERVER, OBJECTS, ATTRIBUTES), 1, 1);
 		
 		parser.addOption(DISPLAY_NAME, 0, STAFCommandParser.VALUENOTALLOWED);
 		
 		parser.addOption(VMID, 1, STAFCommandParser.VALUEREQUIRED);
-		parser.addOptionNeed(VMID, getList(OBJECTS, ATTRIBUTES));
+		parser.addOptionNeed(VMID, getList(SERVER, OBJECTS, ATTRIBUTES));
 
 		parser.addOption(OBJECT, 1, STAFCommandParser.VALUEREQUIRED);
-		parser.addOptionNeed(ATTRIBUTES, OBJECT);
+		parser.addOption(ATTRIBUTE, 1, STAFCommandParser.VALUEREQUIRED);
+		parser.addOptionNeed(ATTRIBUTE, OBJECT);
 	}
 
 

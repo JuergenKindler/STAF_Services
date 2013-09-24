@@ -1,8 +1,11 @@
 package org.jki.staf.service.jmx.commands;
 
 public interface Constants {
+	public static final String SERVER = "SERVER";
 	public static final String ATTRIBUTE = "ATTRIBUTE";
 	public static final String ATTRIBUTES = ATTRIBUTE + "S";
+	public static final String ATTRIBUTE_NAME = ATTRIBUTE + "NAME";
+	public static final String ATTRIBUTE_VALUE = ATTRIBUTE + "VALUE";
 	public static final String DISPLAY_NAME = "DISPLAY_NAME";
 	public static final String OPERATION = "OPERATION";
 	public static final String OPERATIONS = OPERATION + "S";
@@ -19,6 +22,8 @@ public interface Constants {
 	public static final String T_MBEAN_OBJECTS = T_MBEAN_OBJECT + "s";
 	public static final String T_MBEAN_ATTRIBUTE = "MBean Attribute";
 	public static final String T_MBEAN_ATTRIBUTES = T_MBEAN_ATTRIBUTE + "s";
+	public static final String T_MBEAN_ATTRIBUTE_NAME = "MBean Attribute Name";
+	public static final String T_MBEAN_ATTRIBUTE_VALUE = "MBean Attribute Value";
 	public static final String T_MBEAN_OPERATION = "MBean Operation";
 	public static final String T_MBEAN_OPERATIONS = T_MBEAN_OPERATION + "s";
 }
