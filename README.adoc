@@ -1,3 +1,0 @@
-IRC service
-===========
-- Was the first idea to support sending messages to IRC channels ... but never finished! 
